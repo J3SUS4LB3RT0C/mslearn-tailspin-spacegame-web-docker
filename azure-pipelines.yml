@@ -18,9 +18,10 @@ stages:
       displayName: 'Build and push the image to container registry'
       inputs:
         command: buildAndPush
-        containerRegistry: 'Container Registry Connection'
+        buildContext: $(Build.Repository.LocalPath)
         repository: $(webRepository)
         dockerfile: '$(Build.SourcesDirectory)/Tailspin.SpaceGame.Web/Dockerfile'
+        containerRegistry: 'Container Registry Connection'
         tags: |
           $(tag)
 
@@ -37,6 +38,6 @@ stages:
     steps:
     - task: AzureWebAppContainer@1
       inputs:
-        azureSubscription: 'Resource Manager - Tailspin - Space Game'
-        appName: $(WebAppName)
-        containers: '$(RegistryName)/$(webRepository):$(Build.BuildId)'
+       appName: $(WebAppName)
+       azureSubscription: 'Resource Manager - Tailspin - Space Game'
+       imageName: $(RegistryName)/$(webRepository):$(build.buildId)
